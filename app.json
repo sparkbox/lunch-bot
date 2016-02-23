@@ -1,0 +1,23 @@
+{
+  "name": "Lunch Bot",
+  "desecription": "Slack bot to remind us of our lunch duties",
+  "repository": "https://github.com/sparkbox/lunch-bot",
+  "env": {
+    "serviceEmail": {
+      "description": "The Google Sheets API service email"
+    },
+    "sheetID": {
+      "description": "The ID of the Google Sheet"
+    },
+    "sheetPem": {
+      "description": "The pem key file for Google Sheets API"
+    },
+    "sheetUrl": {
+      "description": "The URL to the Google Sheet"
+    },
+    "slackToken": {
+      "description": "The Slack Bot API token"
+    }
+  },
+  "addons": ["scheduler"]
+}
