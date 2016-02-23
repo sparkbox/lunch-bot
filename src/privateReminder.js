@@ -31,4 +31,8 @@ const parseData = (data) => {
   });
 };
 
-getData();
+const date = new Date();
+//wednesday
+if (date.getDay() === 3) {
+  getData();
+}

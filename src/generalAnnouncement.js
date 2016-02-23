@@ -38,4 +38,8 @@ const formatSlackNames = (names) => {
   return formattedNames;
 }
 
-getData();
+const date = new Date();
+//thursday
+if (date.getDay() === 4) {
+  getData();
+}
