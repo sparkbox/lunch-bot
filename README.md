@@ -1,5 +1,7 @@
 # lunch-bot
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 This is a Slack bot that parses the Sparkbox lunch Google Sheet and reminds us who is on duty for the upcoming Friday lunch.
 
 To run the app there are several `ENV` variables that you need to set:
