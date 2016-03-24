@@ -18,17 +18,22 @@ const getData = () => {
 const parseData = (data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
-  const names = parseNames(data, next);
-  const slackNames = returnSlackNames(names, namesObj);
-  const msg = `
-    You are scheduled to help with lunch on Friday with ${names}.\n If you are unable to do so please find a replacement and update the spreadsheet.
-    
-    ${process.env.sheetUrl}
-  `;
+  const today = new Date();
+  //1000 * 3600 * 24 is milliseconds in 1 day
+  const dayInMilliseconds = 1000 * 3600 * 24;
+  if ((next - today) / (dayInMilliseconds) < 7) {
+    const names = parseNames(data, next);
+    const slackNames = returnSlackNames(names, namesObj);
+    const msg = `
+      You are scheduled to help with lunch on Friday with ${names}.\n If you are unable to do so please find a replacement and update the spreadsheet.
 
-  slackNames.forEach((helper) => {
-    postToSlack(`@${helper}`, msg);
-  });
+      ${process.env.sheetUrl}
+    `;
+
+    slackNames.forEach((helper) => {
+      postToSlack(`@${helper}`, msg);
+    });
+  }
 };
 
 const date = new Date();
