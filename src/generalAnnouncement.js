@@ -18,21 +18,16 @@ const getData = () => {
 const parseData = (data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
-  const today = new Date();
-  //1000 * 3600 * 24 is milliseconds in 1 day
-  const dayInMilliseconds = 1000 * 3600 * 24;
-  if ((next - today) / (dayInMilliseconds) < 7) {
-    const names = parseNames(data, next);
-    const slackNames = returnSlackNames(names, namesObj);
-    const formattedNames = formatSlackNames(slackNames).toString();
-    const msg = `
-      <@dayton> ${formattedNames} are scheduled to help with lunch on Friday.
+  const names = parseNames(data, next);
+  const slackNames = returnSlackNames(names, namesObj);
+  const formattedNames = formatSlackNames(slackNames).toString();
+  const msg = `
+    <@dayton> ${formattedNames} are scheduled to help with lunch on Friday.
+    
+    ${process.env.sheetUrl}
+  `;
 
-      ${process.env.sheetUrl}
-    `;
-
-    postToSlack('#general', msg);
-  }
+  postToSlack('#general', msg);
 };
 
 const formatSlackNames = (names) => {
