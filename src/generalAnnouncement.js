@@ -22,7 +22,7 @@ const parseData = (data) => {
   const slackNames = returnSlackNames(names, namesObj);
   const formattedNames = formatSlackNames(slackNames).toString();
   const msg = `
-    <@dayton> ${formattedNames} are scheduled to help with lunch on Friday.
+    @dayton ${formattedNames} are scheduled to help with lunch on Friday.
     
     ${process.env.sheetUrl}
   `;
