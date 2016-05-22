@@ -15,6 +15,9 @@ ID of the Google Sheet you want to parse. In our [sample Sheet], the ID is `1fZX
 ### `slackToken`
 The Slack bot token you received when installing and configuring the `lunch-bot` in [Slack Bots]
 
+### `groupID`
+_Optional_: The [ID of the Slack group][slack-group] to alert.
+
 ### `serviceEmail` and `sheetPem`
 This is an email and public key you generate for `lunch-bot` to use in reading via the [Google Sheets API]. To generate your `serviceEmail`:
 
@@ -38,3 +41,4 @@ Thanks to the [google-sheets-api] npm module for providing the instructions for 
 [Slack Bots]: https://slack.com/apps/A0F7YS25R-bots
 [Google Developer Console]: https://console.developers.google.com/project
 [google-sheets-api]: https://www.npmjs.com/package/google-sheets-api#usage
+[slack-group]: https://api.slack.com/docs/formatting#linking_to_urls
