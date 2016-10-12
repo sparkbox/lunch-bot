@@ -3,10 +3,14 @@ const getDateColumn = (data) => {
     if (r.column === 'A') {
       return r;
     }
+
+    return false;
   }).filter((date) => {
-    if (date.content.search(/16/) != -1) {
+    if (date.content.search(/16/) !== -1) {
       return date;
     }
+
+    return false;
   });
 
   return dates;
@@ -20,9 +24,11 @@ const getNextLunch = (dates) => {
     if (date > now) {
       return x;
     }
+
+    return false;
   });
 
-  //return first date that is after now
+  // return first date that is after now
   return nextDates[0];
 };
 
