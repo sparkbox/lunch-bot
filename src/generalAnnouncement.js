@@ -1,9 +1,8 @@
 import Promise from 'polyfill-promise';
 import { getLunch, getSlackNames } from './getSheets';
 import { getNextLunch, getDateColumn } from './getNextLunchDate';
-import { parseNames } from './parseNames';
+import { formatForGeneral } from './parseNames';
 import { postToSlack } from './postToSlack';
-import { returnSlackNames } from './returnSlackNames';
 
 let namesObj = {};
 
@@ -12,12 +11,11 @@ const formatSlackNames = (names) => names.map((x) => ` <@${x}>`);
 const parseData = (data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
-  const names = parseNames(data, next);
-  const slackNames = returnSlackNames(names, namesObj);
-  const formattedNames = formatSlackNames(slackNames).toString();
+  const names = formatForGeneral(data, next, namesObj);
 /* eslint max-len: "off" */
   const msg = `
-    <!subteam^${process.env.groupID}|dayton> ${formattedNames} are scheduled to help with lunch on Friday.
+    <!subteam^${process.env.groupID}|dayton> The following people are scheduled to help with lunch on Friday:
+    ${names}
 
     ${process.env.sheetUrl}
   `;
