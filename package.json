@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "general": "node dist/generalAnnouncement.js",
+    "signup": "node dist/postSignup.js",
+    "presignup": "babel src --out-dir dist",
     "private": "node dist/privateReminder.js",
     "preprivate": "babel src --out-dir dist",
     "pregeneral": "babel src --out-dir dist",
