@@ -1,25 +1,18 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 const parseNames = (data, nextDateRow) => {
-  const names = data.filter((x) => {
-    return (x.row === nextDateRow.row);
-  }).map((x) => {
+  const names = data.filter((x) => x.row === nextDateRow.row)
+  .map((x) => {
     if (_.includes(['D', 'E', 'F', 'G'], x.column)) {
       return x.content;
     }
-  }).filter((name) => {
-    if(!_.isUndefined(name)) {
-      return name;
-    }
-  }).map((x) => {
-    return x.split(',');
-  });
+    return false;
+  }).filter((name) => name)
+  .map((x) => x.split(','));
 
-  const trimmedNames = _.flatten(names).map((x) => {
-    return x.trim();
-  });;
+  const trimmedNames = _.flatten(names).map((x) => x.trim());
 
-  return trimmedNames
+  return trimmedNames;
 };
 
 export { parseNames };
