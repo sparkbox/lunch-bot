@@ -1,7 +1,7 @@
 import Promise from 'polyfill-promise';
 import { getLunch, getSlackNames } from './getSheets';
 import { getNextLunch, getDateColumn } from './getNextLunchDate';
-import { parseNames } from './parseNames';
+import { formatForPrivate, parseNames } from './parseNames';
 import { postToSlack } from './postToSlack';
 import { returnSlackNames } from './returnSlackNames';
 
@@ -10,11 +10,13 @@ let namesObj = {};
 const parseData = (data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
-  const names = parseNames(data, next);
-  const slackNames = returnSlackNames(names, namesObj);
+  const names = formatForPrivate(data, next);
+  const slackNames = returnSlackNames(parseNames(data, next), namesObj);
   /* eslint max-len: "off" */
   const msg = `
-    You are scheduled to help with lunch on Friday with ${names}.\n If you are unable to do so please find a replacement and update the spreadsheet.
+    You are scheduled to help with lunch on Friday with:
+    ${names}
+    If you are unable to do so please find a replacement and update the spreadsheet.
 
     ${process.env.sheetUrl}
   `;
