@@ -20,7 +20,7 @@ const parseData = (data) => {
     ${process.env.sheetUrl}
   `;
 
-  postToSlack('#general', msg);
+  postToSlack('#-general', msg);
 };
 
 const getData = () => {
