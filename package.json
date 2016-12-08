@@ -18,6 +18,9 @@
       "es2015"
     ]
   },
+  "engines": {
+    "node": "6.9.1"
+  },
   "author": "Sparkbox",
   "license": "ISC",
   "dependencies": {
