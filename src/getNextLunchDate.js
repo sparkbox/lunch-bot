@@ -6,7 +6,7 @@ const getDateColumn = (data) => {
 
     return false;
   }).filter((date) => {
-    if (date.content.search(/16/) !== -1) {
+    if (date.content.search(/17/) !== -1) {
       return date;
     }
 

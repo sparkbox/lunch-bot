@@ -21,7 +21,8 @@ const getSlackNames = () => {
   const sheet = new Sheets({ email: serviceEmail, key: serviceKey });
 
   return sheet.getSheets(id).then((info) => {
-    const slackNames = sheet.getCells(id, info[2].id);
+    const names = info.filter(x => x.title === 'Slack Names')[0];
+    const slackNames = sheet.getCells(id, names.id);
 
     return slackNames;
   });
