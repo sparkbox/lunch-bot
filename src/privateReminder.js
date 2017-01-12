@@ -11,7 +11,7 @@ const parseData = (data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
   const names = formatForPrivate(data, next);
-  const slackNames = returnSlackNames(parseNames(data, next), namesObj);
+  const slackNames = returnSlackNames(null, parseNames(data, next), namesObj);
   /* eslint max-len: "off" */
   const msg = `
     You are scheduled to help with lunch on Friday with:

@@ -1,4 +1,5 @@
 import Promise from 'polyfill-promise';
+import Slack from 'slack-client';
 import { getLunch, getSlackNames } from './getSheets';
 import { getNextLunch, getDateColumn } from './getNextLunchDate';
 import { formatForGeneral } from './parseNames';
@@ -6,13 +7,28 @@ import { postToSlack } from './postToSlack';
 
 let namesObj = {};
 
-const formatSlackNames = (names) => names.map((x) => ` <@${x}>`);
+const returnSlackID = () => {
+  return new Promise((resolve, reject) => {
+    const slack = new Slack.WebClient(process.env.slackToken);
 
-const parseData = (data) => {
+    slack.users.list({}, (err, response) => {
+      if (err) reject(err);
+      const obj = {};
+
+      response.members.forEach((x) => {
+        obj[`${x.name}`] = x.id;
+      });
+
+      resolve(obj);
+    });
+  });
+};
+
+const parseData = (slackIds, data) => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
-  const names = formatForGeneral(data, next, namesObj);
-/* eslint max-len: "off" */
+  const names = formatForGeneral(slackIds, data, next, namesObj);
+  /* eslint max-len: "off" */
   const msg = `
     <!subteam^${process.env.groupID}|dayton> The following people are scheduled to help with lunch on Friday:
     ${names}
@@ -24,11 +40,13 @@ const parseData = (data) => {
 };
 
 const getData = () => {
-  const namesAndData = [getLunch(), getSlackNames()];
+  returnSlackID().then((slackIds) => {
+    const namesAndData = [getLunch(), getSlackNames()];
 
-  Promise.all(namesAndData).then((x) => {
-    namesObj = x[1];
-    parseData(x[0]);
+    Promise.all(namesAndData).then((x) => {
+      namesObj = x[1];
+      parseData(slackIds, x[0]);
+    });
   });
 };
 

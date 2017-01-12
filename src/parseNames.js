@@ -54,7 +54,7 @@ const formatForPrivate = (data, nextDateRow) => {
   return formattedNames;
 };
 
-const formatForGeneral = (data, nextDateRow, namesObj) => {
+const formatForGeneral = (slackIds, data, nextDateRow, namesObj) => {
   let formattedNames = '';
   const roleAndName = groupRoleAndNames(data, nextDateRow);
 
@@ -62,12 +62,12 @@ const formatForGeneral = (data, nextDateRow, namesObj) => {
     let names = '';
 
     e.split(',').forEach((x, z, array) => {
-      const slack = returnSlackNames(x, namesObj);
+      const slack = returnSlackNames(slackIds, x, namesObj);
       if (slack.length > 0) {
         if (z === array.length - 1) {
-          names += `@${slack[0]}`;
+          names += `<@${slack[0]}>`;
         } else {
-          names += `@${slack[0]}, `;
+          names += `<@${slack[0]}>, `;
         }
       }
     });
