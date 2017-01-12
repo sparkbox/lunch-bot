@@ -64,10 +64,12 @@ const formatForGeneral = (data, nextDateRow, namesObj) => {
     e.split(',').forEach((x, z, array) => {
       const slack = returnSlackNames(x, namesObj);
       if (slack.length > 0) {
+        const name = slack[0] ? `@${slack[0]}` : x;
+
         if (z === array.length - 1) {
-          names += `@${slack[0]}`;
+          names += name;
         } else {
-          names += `@${slack[0]}, `;
+          names += `${name}, `;
         }
       }
     });

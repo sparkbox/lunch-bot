@@ -1,12 +1,10 @@
-const returnSlackNames = (names, slackNamesMap) => {
-  const slackNames = slackNamesMap.map((x, i) => {
-    if (names.trim() === x.content) {
+const returnSlackNames = (name, slackNamesMap) => {
+  return slackNamesMap.map((x, i) => {
+    if (name.trim() === x.content) {
       return slackNamesMap[i + 1].content;
     }
-    return false;
-  }).filter((x) => x);
-
-  return slackNames;
+    return null;
+  }).filter(x => x);
 };
 
 export { returnSlackNames };
