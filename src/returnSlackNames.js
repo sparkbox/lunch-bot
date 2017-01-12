@@ -1,8 +1,6 @@
-import _ from 'lodash';
-
 const returnSlackNames = (names, slackNamesMap) => {
   const slackNames = slackNamesMap.map((x, i) => {
-    if (_.includes(names, x.content)) {
+    if (names.trim() === x.content) {
       return slackNamesMap[i + 1].content;
     }
     return false;
