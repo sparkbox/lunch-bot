@@ -1,6 +1,7 @@
-const returnSlackNames = (names, slackNamesMap) => {
-  const slackNames = slackNamesMap.map((x, i) => {
-    if (names.trim() === x.content) {
+const returnSlackNames = (name, slackNamesMap) => {
+  return slackNamesMap.map((x, i) => {
+    const matched = name.filter(z => z.trim() === x.content);
+    if (matched.length) {
       return slackNamesMap[i + 1].content;
     }
     return false;
