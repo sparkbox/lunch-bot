@@ -4,7 +4,7 @@ const returnSlackNames = (name, slackNamesMap) => {
     if (typeof name === 'object') {
       matched = name.filter(z => z.trim() === x.content);
     } else {
-      matched = name === x.content ? name : [];
+      matched = name.trim() === x.content ? name.trim() : [];
     }
     if (matched.length) {
       return slackNamesMap[i + 1].content;

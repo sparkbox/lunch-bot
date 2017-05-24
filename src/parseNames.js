@@ -1,5 +1,23 @@
 import _ from 'lodash';
 import { returnSlackNames } from './returnSlackNames';
+import Slack from 'slack-client';
+
+const getUsers = () => new Promise((resolve, reject) => {
+  const slack = new Slack.WebClient(process.env.slackToken);
+  slack.users.list({}, (err, x) => {
+    const y = x.members.filter(user => !user.deleted)
+    .map(z => {
+      return {
+        id: z.id,
+        name: z.real_name,
+        firstName: z.profile.first_name,
+        shortName: z.name,
+      };
+    });
+
+    resolve(y);
+  });
+});
 
 const parseNames = (data, nextDateRow) => {
   const names = data.filter((x) => x.row === nextDateRow.row)
@@ -54,7 +72,7 @@ const formatForPrivate = (data, nextDateRow) => {
   return formattedNames;
 };
 
-const formatForGeneral = (data, nextDateRow, namesObj) => {
+const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
   let formattedNames = '';
   const roleAndName = groupRoleAndNames(data, nextDateRow);
 
@@ -65,9 +83,9 @@ const formatForGeneral = (data, nextDateRow, namesObj) => {
       const slack = returnSlackNames(x, namesObj);
       if (slack.length > 0) {
         if (z === array.length - 1) {
-          names += `@${slack[0]}`;
+          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0].id}>`;
         } else {
-          names += `@${slack[0]}, `;
+          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0].id}>, `;
         }
       }
     });
@@ -81,4 +99,4 @@ const formatForGeneral = (data, nextDateRow, namesObj) => {
   return formattedNames;
 };
 
-export { parseNames, formatForPrivate, formatForGeneral };
+export { getUsers, parseNames, formatForPrivate, formatForGeneral };
