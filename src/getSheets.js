@@ -10,7 +10,7 @@ const serviceKey = process.env.sheetPem;
 const getLunch = () => {
   const sheet = new Sheets({ email: serviceEmail, key: serviceKey });
 
-  return sheet.getSheets(id).then((info) => {
+  return sheet.getSheets(id).then(info => {
     const cells = sheet.getCells(id, info[0].id);
 
     return cells;
@@ -20,7 +20,7 @@ const getLunch = () => {
 const getSlackNames = () => {
   const sheet = new Sheets({ email: serviceEmail, key: serviceKey });
 
-  return sheet.getSheets(id).then((info) => {
+  return sheet.getSheets(id).then(info => {
     const names = info.filter(x => x.title === 'Slack Names')[0];
     const slackNames = sheet.getCells(id, names.id);
 

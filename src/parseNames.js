@@ -2,39 +2,41 @@ import _ from 'lodash';
 import { returnSlackNames } from './returnSlackNames';
 import Slack from 'slack-client';
 
-const getUsers = () => new Promise((resolve, reject) => {
-  const slack = new Slack.WebClient(process.env.slackToken);
-  slack.users.list({}, (err, x) => {
-    const y = x.members.filter(user => !user.deleted)
-    .map(z => {
-      return {
-        id: z.id,
-        name: z.real_name,
-        firstName: z.profile.first_name,
-        shortName: z.name,
-      };
-    });
+const getUsers = () =>
+  new Promise((resolve, reject) => {
+    const slack = new Slack.WebClient(process.env.slackToken);
+    slack.users.list({}, (err, x) => {
+      const y = x.members.filter(user => !user.deleted).map(z => {
+        return {
+          id: z.id,
+          name: z.real_name,
+          firstName: z.profile.first_name,
+          shortName: z.name,
+        };
+      });
 
-    resolve(y);
+      resolve(y);
+    });
   });
-});
 
 const parseNames = (data, nextDateRow) => {
-  const names = data.filter((x) => x.row === nextDateRow.row)
-  .map((x) => {
-    if (_.includes(['D', 'E', 'F', 'G'], x.column)) {
-      return x.content;
-    }
-    return false;
-  }).filter((name) => name)
-  .map((x) => x.split(','));
+  const names = data
+    .filter(x => x.row === nextDateRow.row)
+    .map(x => {
+      if (_.includes(['D', 'E', 'F', 'G'], x.column)) {
+        return x.content;
+      }
+      return false;
+    })
+    .filter(name => name)
+    .map(x => x.split(','));
 
-  const trimmedNames = _.flatten(names).map((x) => x.trim());
+  const trimmedNames = _.flatten(names).map(x => x.trim());
 
   return trimmedNames;
 };
 
-const roleForLetter = (letter) => {
+const roleForLetter = letter => {
   const roles = {
     D: 'Primary Prep',
     E: 'Prep Helpers',
@@ -47,8 +49,7 @@ const roleForLetter = (letter) => {
 const groupRoleAndNames = (data, nextDateRow) => {
   const roleAndName = {};
 
-  data.filter((x) => x.row === nextDateRow.row)
-  .forEach((x) => {
+  data.filter(x => x.row === nextDateRow.row).forEach(x => {
     if (_.includes(['D', 'E', 'F', 'G'], x.column)) {
       const role = roleForLetter(x.column);
       roleAndName[`${role}`] = x.content;
@@ -83,9 +84,11 @@ const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
       const slack = returnSlackNames(x, namesObj);
       if (slack.length > 0) {
         if (z === array.length - 1) {
-          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0].id}>`;
+          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0]
+            .id}>`;
         } else {
-          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0].id}>, `;
+          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0]
+            .id}>, `;
         }
       }
     });

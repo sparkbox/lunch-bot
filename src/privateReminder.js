@@ -7,7 +7,7 @@ import { returnSlackNames } from './returnSlackNames';
 
 let namesObj = {};
 
-const parseData = (data) => {
+const parseData = data => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
   const names = formatForPrivate(data, next);
@@ -21,7 +21,7 @@ const parseData = (data) => {
     ${process.env.sheetUrl}
   `;
 
-  slackNames.forEach((helper) => {
+  slackNames.forEach(helper => {
     postToSlack(`@${helper}`, msg);
   });
 };
@@ -29,7 +29,7 @@ const parseData = (data) => {
 const getData = () => {
   const namesAndData = [getLunch(), getSlackNames()];
 
-  Promise.all(namesAndData).then((x) => {
+  Promise.all(namesAndData).then(x => {
     namesObj = x[1];
     parseData(x[0]);
   });
