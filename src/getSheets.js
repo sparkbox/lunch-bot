@@ -1,6 +1,9 @@
 import googleAPI from 'google-sheets-api';
 /* eslint no-unused-vars: "off" */
 import Promise from 'polyfill-promise';
+const { Client } = require('pg');
+
+const config = require('../pg-config');
 
 const Sheets = googleAPI.Sheets;
 const id = process.env.sheetID;
@@ -17,15 +20,18 @@ const getLunch = () => {
   });
 };
 
-const getSlackNames = () => {
-  const sheet = new Sheets({ email: serviceEmail, key: serviceKey });
-
-  return sheet.getSheets(id).then(info => {
-    const names = info.filter(x => x.title === 'Slack Names')[0];
-    const slackNames = sheet.getCells(id, names.id);
-
-    return slackNames;
+const getSlackNames = () =>
+  new Promise((resolve, reject) => {
+    const postgres = new Client(config);
+    postgres.connect();
+    postgres.query({ text: 'select name,slackid from helpers' }, (err, res) => {
+      if (!err) {
+        resolve(res.rows);
+      } else {
+        reject(err);
+      }
+      postgres.end();
+    });
   });
-};
 
 export { getLunch, getSlackNames };

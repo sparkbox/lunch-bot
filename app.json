@@ -17,7 +17,10 @@
     },
     "slackToken": {
       "description": "The Slack Bot API token"
+    },
+    "slackSlashToken": {
+      "description": "The Slack Slash API token"
     }
   },
-  "addons": ["scheduler"]
+  "addons": ["scheduler", "heroku-postgresql:hobby-dev"]
 }

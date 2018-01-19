@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { returnSlackNames } from './returnSlackNames';
 import Slack from 'slack-client';
 
 const getUsers = () =>
@@ -74,6 +73,7 @@ const formatForPrivate = (data, nextDateRow) => {
 };
 
 const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
+  let noMatch = [];
   let formattedNames = '';
   const roleAndName = groupRoleAndNames(data, nextDateRow);
 
@@ -81,15 +81,16 @@ const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
     let names = '';
 
     e.split(',').forEach((x, z, array) => {
-      const slack = returnSlackNames(x, namesObj);
+      const slack = namesObj
+        .filter(name => {
+          return name.name === x;
+        })
+        .map(obj => obj.slackid);
       if (slack.length > 0) {
-        if (z === array.length - 1) {
-          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0]
-            .id}>`;
-        } else {
-          names += `<@${slackInfo.filter(x => x.shortName === slack[0])[0]
-            .id}>, `;
-        }
+        names += z === array.length - 1 ? `<@${slack[0]}>` : `<@${slack[0]}>, `;
+      } else {
+        noMatch.push(x);
+        names += `<@${x}>`;
       }
     });
 
@@ -98,6 +99,12 @@ const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
   ${names}
     `;
   });
+
+  if (noMatch.length > 0) {
+    formattedNames += `\n${noMatch.join(
+      ', '
+    )} need to update their name with lunch-bot via \`/lunch-bot register\``;
+  }
 
   return formattedNames;
 };

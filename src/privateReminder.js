@@ -3,7 +3,6 @@ import { getLunch, getSlackNames } from './getSheets';
 import { getNextLunch, getDateColumn } from './getNextLunchDate';
 import { formatForPrivate, parseNames } from './parseNames';
 import { postToSlack } from './postToSlack';
-import { returnSlackNames } from './returnSlackNames';
 
 let namesObj = {};
 
@@ -11,7 +10,9 @@ const parseData = data => {
   const dates = getDateColumn(data);
   const next = getNextLunch(dates);
   const names = formatForPrivate(data, next);
-  const slackNames = returnSlackNames(parseNames(data, next), namesObj);
+  const slackNames = namesObj
+    .filter(x => parseNames(data, next).indexOf(x.name) > -1)
+    .map(x => x.slackid);
   /* eslint max-len: "off" */
   const msg = `
     You are scheduled to help with lunch on Friday with:
@@ -22,7 +23,7 @@ const parseData = data => {
   `;
 
   slackNames.forEach(helper => {
-    postToSlack(`@${helper}`, msg);
+    postToSlack(helper, msg);
   });
 };
 
