@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
     "general": "node dist/generalAnnouncement.js",
     "signup": "node dist/postSignup.js",
     "presignup": "babel src --out-dir dist",
@@ -26,6 +27,7 @@
   "dependencies": {
     "babel-cli": "^6.5.1",
     "babel-preset-es2015": "^6.5.0",
+    "express": "^4.16.2",
     "google-sheets-api": "^0.4.1",
     "lodash": "^4.5.0",
     "slack-client": "^2.0.2"
