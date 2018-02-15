@@ -103,7 +103,7 @@ const formatForGeneral = (data, nextDateRow, namesObj, slackInfo) => {
   if (noMatch.length > 0) {
     formattedNames += `\n${noMatch.join(
       ', '
-    )} need to update their name with lunch-bot via \`/lunch-bot register\``;
+    )} need to update their name with lunch-bot via \`/lunch register\``;
   }
 
   return formattedNames;
