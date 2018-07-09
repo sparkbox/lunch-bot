@@ -12,7 +12,9 @@
     "private": "node dist/privateReminder.js",
     "preprivate": "babel src --out-dir dist",
     "pregeneral": "babel src --out-dir dist",
-    "postinstall": "mkdir -p dist && babel src --out-dir dist"
+    "postinstall": "mkdir -p dist && babel src --out-dir dist",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "babel": {
     "presets": [
@@ -32,7 +34,8 @@
     "google-sheets-api": "^0.4.1",
     "lodash": "^4.5.0",
     "pg": "^7.4.1",
-    "slack-client": "^2.0.2"
+    "slack-client": "^2.0.2",
+    "snyk": "^1.88.2"
   },
   "devDependencies": {
     "eslint": "^3.7.1",
@@ -41,5 +44,6 @@
     "eslint-plugin-flowtype": "^2.20.0",
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-react": "^6.4.1"
-  }
+  },
+  "snyk": true
 }
